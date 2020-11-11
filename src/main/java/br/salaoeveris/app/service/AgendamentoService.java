@@ -19,37 +19,39 @@ public class AgendamentoService {
 		_repository = repository;
 	}
 	
-	public BaseResponse inserir(AgendamentoRequest agendamentoResponse) {
+	public BaseResponse inserir(AgendamentoRequest agendamentoRequest) {
 		Cliente cliente = new Cliente();
 		Servico servico = new Servico();
 		Agendamento agendamento = new Agendamento();
-		BaseResponse base = new BaseResponse();
-		base.statusCode = 400;
+		BaseResponse response = new BaseResponse();
+		response.statusCode = 400;
 
-		if (agendamentoResponse.getDataHora().equals(null)) {
-			base.message = "A data e hora do serviço não foi preenchido.";
-			return base;
+		if (agendamentoRequest.getDataHora().equals(null)) {
+			response.message = "A data e hora do serviço não foi preenchido.";
+			return response;
 		}
 
-		if (agendamento.getClienteId() == null ) {
-			base.message = "Cliente não inserido.";
-			return base;
+		if (agendamentoRequest.getClienteId() == null ) {
+			response.message = "Cliente não inserido.";
+			return response;
 		}
 		
-		if (agendamento.getServicoId() == null ) {
-			base.message = "servico não inserido.";
-			return base;
+		if (agendamentoRequest.getServicoId() == null ) {
+			response.message = "servico não inserido.";
+			return response;
 		}
-
-
-		agendamento.setDataHora(agendamentoResponse.getDataHora());
+		
+		cliente.setId(agendamentoRequest.getClienteId());
 		agendamento.setClienteId(cliente);
+		
+		
+		servico.setId(agendamentoRequest.getServicoId());
 		agendamento.setServicoId(servico);
 
 
 		_repository.save(agendamento);
-		base.statusCode = 201;
-		base.message = "Agendamento inserido com sucesso.";
-		return base;
+		response.statusCode = 201;
+		response.message = "Agendamento inserido com sucesso.";
+		return response;
 	}
 }
